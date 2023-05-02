@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/SHENKAR/SOFTWARE_ENGINEERING/game store HM",
-      "program": "c:/SHENKAR/SOFTWARE_ENGINEERING/game store HM/build/Debug/outDebug",
+      "cwd": "c:/SHENKAR/SOFTWARE_ENGINEERING/game store HM/game-store-HM2",
+      "program": "c:/SHENKAR/SOFTWARE_ENGINEERING/game store HM/game-store-HM2/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

@@ -25,7 +25,7 @@
 int main()
 {
     int choice;
-
+loop:
     printf("Welcome to the Game Library!\n");
     printf("----------------------------\n");
     printf("1.Insert a game\n");
@@ -40,9 +40,10 @@ int main()
     printf("Enter your choice: ");
 
     scanf("%d", &choice);
-    // consume the newline character left in the input buffer
+    
     getchar();
 
+    
     while (choice != 8)
     {
         switch (choice)
@@ -74,8 +75,11 @@ int main()
                 float user_input_rating = 0;
                 scanf("%f", &user_input_rating);
                 
-
+                
                 game_node->rating = user_input_rating;
+                printf("Game inserted successfully.\n");
+                printf("\n");
+                goto loop;
                 break;
 
             default:
