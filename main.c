@@ -22,8 +22,12 @@
     }GameLinkedList;
 
 
+void insert_game_at_end(GameLinkedList *game_list);
+int delete_game_by_title(GameLinkedList *game_list);
+
 int main()
 {
+    GameLinkedList game_list = { NULL };
     int choice;
 loop:
     printf("Welcome to the Game Library!\n");
@@ -49,38 +53,17 @@ loop:
         switch (choice)
         {
             case 1:
-                printf("Enter game title: ");
-                char buffer[100];
-                fgets(buffer, 100, stdin);
-
-                GameNode *game_node = malloc(sizeof(GameNode));
-                game_node->title = malloc(strlen(buffer) + 1);
-                strcpy(game_node->title, buffer);
-
-                printf("Enter game genre: ");
-                fgets(buffer, 100, stdin);
-
-                game_node->genre = malloc(strlen(buffer) + 1);
-                strcpy(game_node->genre, buffer);
-                
-
-                printf("Enter year of release: ");
-                int user_input_year = 0;
-                scanf("%d", &user_input_year);
-                
-
-                game_node->year = user_input_year;
-
-                printf("Enter game rating (out of 10): ");
-                float user_input_rating = 0;
-                scanf("%f", &user_input_rating);
-                
-                
-                game_node->rating = user_input_rating;
-                printf("Game inserted successfully.\n");
+              insert_game_at_end(&game_list);
                 printf("\n");
                 goto loop;
                 break;
+
+            case 2:
+            delete_game_by_title(&game_list);
+            printf("\n");
+            goto loop;
+            break;
+            
 
             default:
                 printf("Invalid choice. Please try again.\n");
@@ -89,9 +72,94 @@ loop:
 
         printf("Enter your choice: ");
         scanf("%d", &choice);
-        // consume the newline character left in the input buffer
+        
         getchar();
     }
 
     return 0;
 };
+
+void insert_game_at_end(GameLinkedList *game_list)
+{
+        printf("Enter game title: ");
+        char buffer[100];
+        fgets(buffer, 100, stdin);
+
+        GameNode *game_node = malloc(sizeof(GameNode));
+        game_node->title = malloc(strlen(buffer) + 1);
+        strcpy(game_node->title, buffer);
+
+        printf("Enter game genre: ");
+        fgets(buffer, 100, stdin);
+
+        game_node->genre = malloc(strlen(buffer) + 1);
+        strcpy(game_node->genre, buffer);
+
+        printf("Enter year of release: ");
+        int user_input_year = 0;
+        scanf("%d", &user_input_year);
+        getchar();
+
+        game_node->year = user_input_year;
+
+        printf("Enter game rating (out of 10): ");
+        float user_input_rating = 0;
+        scanf("%f", &user_input_rating);
+        getchar();
+
+     game_node->rating = user_input_rating;
+
+    
+        game_node->next = NULL;
+        if (game_list->head == NULL) {
+            game_list->head = game_node;
+        } else {
+            GameNode *current_node = game_list->head;
+            while (current_node->next != NULL) {
+                current_node = current_node->next;
+            }
+            current_node->next = game_node;
+        }
+
+        printf("Game inserted successfully.\n");
+}
+
+
+
+    int delete_game_by_title(GameLinkedList *game_list)
+    {
+        printf("Delete a game\n");
+        printf("Enter game title that you wish to delete: ");
+        char user_title_input[100];
+        fgets(user_title_input, 100, stdin);;
+
+        GameNode *current_node = game_list->head;
+        GameNode *prev_node = NULL;
+        int found = 0;
+
+        while (current_node != NULL) {
+            if (strcmp(current_node->title, user_title_input) == 0) {
+                found = 1;
+                break;
+        }
+        prev_node = current_node;
+        current_node = current_node->next;
+    }
+
+    if (found) {
+        if (prev_node == NULL) {
+            game_list->head = current_node->next;
+        } else {
+            prev_node->next = current_node->next;
+        }
+
+        free(current_node->title);
+        free(current_node->genre);
+        free(current_node);
+
+        printf("Game deleted successfully.\n");
+    } else {
+        printf("There is no such game in the store.\n");
+    }
+        printf("\n");
+    }
