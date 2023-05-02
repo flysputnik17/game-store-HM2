@@ -24,6 +24,8 @@
 
 void insert_game_at_end(GameLinkedList *game_list);
 int delete_game_by_title(GameLinkedList *game_list);
+void print_games(GameLinkedList *game_list);
+void sort_games_by_rating(GameLinkedList *game_list);
 
 int main()
 {
@@ -63,7 +65,18 @@ loop:
             printf("\n");
             goto loop;
             break;
-            
+
+            case 3:
+            print_games(&game_list);
+            printf("\n");
+            goto loop;
+            break;
+
+            case 4:
+            void sort_games_by_rating(&game_list);
+            printf("\n");
+            goto loop;
+            break;
 
             default:
                 printf("Invalid choice. Please try again.\n");
@@ -126,12 +139,13 @@ void insert_game_at_end(GameLinkedList *game_list)
 
 
 
-    int delete_game_by_title(GameLinkedList *game_list)
-    {
+   int delete_game_by_title(GameLinkedList *game_list)
+{
         printf("Delete a game\n");
         printf("Enter game title that you wish to delete: ");
         char user_title_input[100];
-        fgets(user_title_input, 100, stdin);;
+        fgets(user_title_input, 100, stdin);
+        getchar();
 
         GameNode *current_node = game_list->head;
         GameNode *prev_node = NULL;
@@ -141,25 +155,52 @@ void insert_game_at_end(GameLinkedList *game_list)
             if (strcmp(current_node->title, user_title_input) == 0) {
                 found = 1;
                 break;
+            }
+            prev_node = current_node;
+            current_node = current_node->next;
         }
-        prev_node = current_node;
+
+        if (found) {
+            if (prev_node == NULL) {
+                game_list->head = current_node->next;
+            } else {
+                prev_node->next = current_node->next;
+            }
+
+            free(current_node->title);
+            free(current_node->genre);
+            free(current_node);
+            printf("Game deleted successfully.\n");
+        } else {
+            printf("There is no such game in the library.\n");
+        }
+            printf("\n");
+}
+
+void print_games(GameLinkedList *game_list)
+{
+    printf("Games in the library:\n");
+    GameNode *current_node = game_list->head;
+
+    if (current_node == NULL) {
+        printf("The library has no games.\n");
+        return;
+    }
+
+    while (current_node != NULL) {
+        printf("-%s\n", current_node->title);
         current_node = current_node->next;
     }
+}
 
-    if (found) {
-        if (prev_node == NULL) {
-            game_list->head = current_node->next;
-        } else {
-            prev_node->next = current_node->next;
-        }
+void sort_games_by_rating(GameLinkedList *game_list)
+{
+    printf("Games sorted by rating:\n");
+    GameNode *current_node = game_list->head->rating
 
-        free(current_node->title);
-        free(current_node->genre);
-        free(current_node);
-
-        printf("Game deleted successfully.\n");
-    } else {
-        printf("There is no such game in the store.\n");
+    for (int i = game_list->rating; i < ; i++)
+    {
+        /* code */
     }
-        printf("\n");
-    }
+    
+}
