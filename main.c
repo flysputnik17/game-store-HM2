@@ -196,11 +196,8 @@ void print_games(GameLinkedList *game_list)
 void sort_games_by_rating(GameLinkedList *game_list)
 {
     printf("Games sorted by rating:\n");
-    GameNode *current_node = game_list->head->rating
+    GameNode *current_node = game_list->head->rating;
 
-    for (int i = game_list->rating; i < ; i++)
-    {
-        /* code */
-    }
+    
     
 }
