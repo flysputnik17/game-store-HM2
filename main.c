@@ -74,6 +74,12 @@ loop:
             goto loop;
             break;
 
+            // case 4:
+            // void sort_games_by_rating(&game_list);
+            // printf("\n");
+            // goto loop;
+            // break;
+
             case 5:
             insert_dlc_at_end(&game_list);
             printf("\n");
@@ -81,11 +87,7 @@ loop:
             break;
 
 
-            // case 4:
-            // void sort_games_by_rating(&game_list);
-            // printf("\n");
-            // goto loop;
-            // break;
+            
 
             default:
                 printf("Invalid choice. Please try again.\n");
@@ -216,30 +218,31 @@ void insert_dlc_at_end(GameLinkedList *game_list)
     printf("Enter game title: ");
     char buffer [100];
     fgets(buffer,100,stdin);
-    GameNode *current_node = game_list->head;
-
+    
     DLCNode *dlc_node = malloc(sizeof(DLCNode));
     dlc_node->title = malloc(strlen(buffer) + 1);
+    strcpy(dlc_node->title,buffer);
 
-    while(current_node != NULL)
+    GameNode *current_node = game_list->head;
+
+    if(current_node != NULL)
     {
         if(strcmp(current_node->title, buffer) == 0)
         {
             printf("Enter DLC title :");
+            char user_input;
+            scanf("%s",&user_input);
             strcpy(dlc_node->title, buffer);
-            getchar();
+            
 
             printf("Enter DLC price :");
             float dlc_price = 0;
             scanf("%f",&dlc_price);
             dlc_node->price = dlc_price;
-
             
         }else{
             printf("There is no such game in the library.");
-            break;
         }
-    }
-    
-    
+        
+    } 
 }
