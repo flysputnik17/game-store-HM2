@@ -27,6 +27,7 @@ int delete_game_by_title(GameLinkedList *game_list);
 void print_games(GameLinkedList *game_list);
 void sort_games_by_rating(GameLinkedList *game_list);
 void insert_dlc_at_end(GameLinkedList *game_list);
+int delete_dlc_by_title(GameLinkedList *game_list);
 
 
 int main()
@@ -85,6 +86,13 @@ loop:
             printf("\n");
             goto loop;
             break;
+
+            case 6:
+            delete_dlc_by_title(&game_list);
+            printf("\n");
+            goto loop;
+            break;
+
 
 
             
@@ -246,3 +254,66 @@ void insert_dlc_at_end(GameLinkedList *game_list)
         
     } 
 }
+
+int delete_dlc_by_title(GameLinkedList *game_list)
+{
+    printf("Enter game title:");
+    char user_title_input[100];
+    fgets(user_title_input,100,stdin);
+
+    GameNode *current_game_node = game_list->head;
+    GameNode *prev_game_node = NULL;
+    int found_game = 0;
+
+    while (current_game_node != NULL) 
+    {
+        if (strcmp(current_game_node->title, user_title_input) == 0) 
+        {
+            found_game = 1;
+            break;
+        }
+        prev_game_node = current_game_node;
+        current_game_node = current_game_node->next;
+    }
+
+    if(found_game)
+    {
+        printf("Enter DLC title:");
+        char user_dlc_title_input[100];
+        fgets(user_dlc_title_input,100,stdin);
+
+        DLCNode *current_dlc_node = current_game_node->dlc_head;
+        DLCNode *prev_dlc_node = NULL;
+        int found_dlc = 0;
+        
+        while (current_dlc_node != NULL) 
+        {
+            if (strcmp(current_dlc_node->title, user_dlc_title_input) == 0) 
+            {
+                found_dlc = 1;
+                break;
+            }
+            prev_dlc_node = current_dlc_node;
+            current_dlc_node = current_dlc_node->next;
+        }
+
+        if(found_dlc)
+        {
+            if (prev_dlc_node == NULL) {
+                current_game_node->dlc_head = current_dlc_node->next;
+            } else {
+                prev_dlc_node->next = current_dlc_node->next;
+            }
+
+            free(current_dlc_node->title);
+            free(current_dlc_node);
+            printf("DLC deleted successfully.\n");
+        } else {
+            printf("There is no such DLC in the library.\n");
+        }
+        printf("\n");
+    } else {
+        printf("There is no such game in the library.\n");
+    }
+}
+
