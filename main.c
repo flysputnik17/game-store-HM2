@@ -150,11 +150,13 @@ GameNode insert_game_at_end(GameLinkedList *game_list)
 
     
         game_node->next = NULL;
-        if (game_list->head == NULL) {
+        if (game_list->head == NULL) 
+        {
             game_list->head = game_node;
         } else {
             GameNode *current_node = game_list->head;
-            while (current_node->next != NULL) {
+            while (current_node->next != NULL) 
+            {
                 current_node = current_node->next;
             }
             current_node->next = game_node;
@@ -177,7 +179,8 @@ GameNode insert_game_at_end(GameLinkedList *game_list)
         GameNode *prev_node = NULL;
         int found = 0;
 
-        while (current_node != NULL) {
+        while (current_node != NULL) 
+        {
             if (strcmp(current_node->title, user_title_input) == 0) {
                 found = 1;
                 break;
@@ -187,7 +190,8 @@ GameNode insert_game_at_end(GameLinkedList *game_list)
         }
 
         if (found) {
-            if (prev_node == NULL) {
+            if (prev_node == NULL) 
+            {
                 game_list->head = current_node->next;
             } else {
                 prev_node->next = current_node->next;
@@ -208,23 +212,27 @@ void print_games(GameLinkedList *game_list)
     printf("Games in the library:\n");
     GameNode *current_node = game_list->head;
 
-    if (current_node == NULL) {
+    if (current_node == NULL) 
+    {
         printf("The library has no games.\n");
         return;
     }
 
-    while (current_node != NULL) {
+    while (current_node != NULL) 
+    {
         printf("-%s\n", current_node->title);
         current_node = current_node->next;
     }
 }
 
-void sort_games_by_rating(GameLinkedList *game_list) {
+void sort_games_by_rating(GameLinkedList *game_list) 
+{
     GameNode *current_node = game_list->head;
 
     // Count the number of games in the list
     int num_games = 0;
-    while (current_node != NULL) {
+    while (current_node != NULL) 
+    {
         num_games++;
         current_node = current_node->next;
     }
@@ -233,14 +241,17 @@ void sort_games_by_rating(GameLinkedList *game_list) {
     GameNode **games_array = malloc(num_games * sizeof(GameNode *));
     current_node = game_list->head;
     int i = 0;
-    while (current_node != NULL) {
+    while (current_node != NULL) 
+    {
         games_array[i++] = current_node;
         current_node = current_node->next;
     }
 
     // Sort the array based on the rating
-    for (int i = 0; i < num_games - 1; i++) {
-        for (int j = i + 1; j < num_games; j++) {
+    for (int i = 0; i < num_games - 1; i++) 
+    {
+        for (int j = i + 1; j < num_games; j++) 
+        {
             if (games_array[i]->rating < games_array[j]->rating) {
                 GameNode *temp = games_array[i];
                 games_array[i] = games_array[j];
@@ -251,7 +262,8 @@ void sort_games_by_rating(GameLinkedList *game_list) {
 
     // Print the sorted list of games
     printf("Games sorted by rating:\n");
-    for (int i = 0; i < num_games; i++) {
+    for (int i = 0; i < num_games; i++) 
+    {
         printf("- %s (%0.1f)\n", games_array[i]->title, games_array[i]->rating);
     }
 
@@ -260,51 +272,78 @@ void sort_games_by_rating(GameLinkedList *game_list) {
 }
 
 
-DLCNode insert_dlc_at_end(GameLinkedList *game_list) {
-    printf("Enter game title: ");
+DLCNode insert_dlc_at_end(GameLinkedList *game_list)
+{
+    printf("Enter the title of the game: ");
     char buffer[100];
     fgets(buffer, 100, stdin);
 
-    DLCNode *dlc_node = malloc(sizeof(DLCNode));
-    dlc_node->title = malloc(strlen(buffer) + 1);
-    strcpy(dlc_node->title, buffer);
-
     GameNode *current_node = game_list->head;
+    int found = 0;
 
-    if (current_node != NULL) {
+    while (current_node != NULL) 
+    {
         if (strcmp(current_node->title, buffer) == 0) {
-            printf("Enter DLC title :");
-            char* user_input = malloc(100 * sizeof(char));
-            fgets(user_input, 100, stdin);
-            strcpy(dlc_node->title, user_input);
-            free(user_input);
-
-            printf("Enter DLC price :");
-            float dlc_price = 0;
-            scanf("%f", &dlc_price);
-            dlc_node->price = dlc_price;
-
-        } else {
-            printf("There is no such game in the library.");
+            found = 1;
+            break;
         }
+        current_node = current_node->next;
+    }
+
+    if (found) {
+        printf("Enter the title of the DLC: ");
+        char dlc_title[100];
+        fgets(dlc_title, 100, stdin);
+
+        printf("Enter the price of the DLC: ");
+        float dlc_price = 0;
+        scanf("%f", &dlc_price);
+        getchar();
+
+        DLCNode *dlc_node = malloc(sizeof(DLCNode));
+        dlc_node->title = malloc(strlen(dlc_title) + 1);
+        strcpy(dlc_node->title, dlc_title);
+        dlc_node->price = dlc_price;
+        dlc_node->next = NULL;
+
+        if (current_node->dlc_head == NULL) 
+        {
+            current_node->dlc_head = dlc_node;
+        } else {
+            DLCNode *current_dlc_node = current_node->dlc_head;
+            while (current_dlc_node->next != NULL) 
+            {
+                current_dlc_node = current_dlc_node->next;
+            }
+            current_dlc_node->next = dlc_node;
+        }
+
+        printf("DLC inserted successfully.\n");
+    } else {
+        printf("Game not found.\n");
     }
 }
 
 
 
-DLCNode delete_dlc_by_title(GameLinkedList *game_list) {
+
+
+DLCNode delete_dlc_by_title(GameLinkedList *game_list) 
+{
     printf("Enter game title: ");
     char buffer[100];
     fgets(buffer, 100, stdin);
 
     // find the game with the specified title
     GameNode *game_node = game_list->head;
-    while (game_node != NULL && strcmp(game_node->title, buffer) != 0) {
+    while (game_node != NULL && strcmp(game_node->title, buffer) != 0) 
+    {
         game_node = game_node->next;
     }
 
     // if the game is not found, print an error message and return
-    if (game_node == NULL) {
+    if (game_node == NULL) 
+    {
         printf("No such game in library.\n");
         DLCNode dlc_node = { NULL };
         return dlc_node;
@@ -317,13 +356,15 @@ DLCNode delete_dlc_by_title(GameLinkedList *game_list) {
     DLCNode *dlc_node = game_node->dlc_head->next;
     DLCNode *prev_node = game_node->dlc_head;
     int found = 0;
-    while (dlc_node != NULL && strcmp(dlc_node->title, buffer) != 0) {
+    while (dlc_node != NULL && strcmp(dlc_node->title, buffer) != 0) 
+    {
         prev_node = dlc_node;
         dlc_node = dlc_node->next;
     }
 
     // if the DLC node is not found, print an error message and return
-    if (dlc_node == NULL) {
+    if (dlc_node == NULL) 
+    {
         printf("Sorry, no such DLC title in the game.\n");
         DLCNode dlc_node = { NULL };
         return dlc_node;
@@ -343,5 +384,49 @@ DLCNode delete_dlc_by_title(GameLinkedList *game_list) {
 }
 
 
+
+
+void print_dlcs_for_game(GameLinkedList *game_list)
+{
+    printf("Enter the title of the game: ");
+    char user_title_input[100];
+    fgets(user_title_input, 100, stdin);
+
+    GameNode *current_node = game_list->head;
+    int found = 0;
+
+    while (current_node != NULL)
+    {
+        if (strcmp(current_node->title, user_title_input) == 0)
+        {
+            found = 1;
+            break;
+        }
+        current_node = current_node->next;
+    }
+
+    if (found)
+    {
+        printf("DLCs for %s:\n", current_node->title);
+        DLCNode *dlc_node = current_node->dlc_head;
+
+        if (dlc_node == NULL)
+        {
+            printf("This game does not have any DLCs.\n");
+        }
+        else
+        {
+            while (dlc_node != NULL)
+            {
+                printf("- %s\n", dlc_node->title);
+                dlc_node = dlc_node->next;
+            }
+        }
+    }
+    else
+    {
+        printf("Game not found.\n");
+    }
+}
 
 
