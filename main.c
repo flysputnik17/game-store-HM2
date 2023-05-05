@@ -298,7 +298,7 @@ DLCNode insert_dlc_at_end(GameLinkedList *game_list)
         printf("Enter the price of the DLC: ");
         float dlc_price = 0;
         scanf("%f", &dlc_price);
-        getchar();
+        getchar(); // consume the newline character left in the input buffer
 
         DLCNode *dlc_node = malloc(sizeof(DLCNode));
         dlc_node->title = malloc(strlen(dlc_title) + 1);
@@ -323,6 +323,7 @@ DLCNode insert_dlc_at_end(GameLinkedList *game_list)
         printf("Game not found.\n");
     }
 }
+
 
 
 
@@ -373,7 +374,7 @@ DLCNode delete_dlc_by_title(GameLinkedList *game_list)
     // remove the DLC node from the linked list
     prev_node->next = dlc_node->next;
 
-    // free the memory occupied by the DLC node
+    
     free(dlc_node->title);
     free(dlc_node);
 
